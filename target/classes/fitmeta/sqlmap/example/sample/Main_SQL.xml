@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="mainDAO">
+	
+	
+	<select id="mainDAO.select_class_list" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				CLASS_ID			class_id,
+				PT_ID				pt_id,
+				CLASS_NAME			class_name,
+				FILE_NAME			file_name,
+				CLASS_INTRO			class_intro,
+				(SELECT COUNT(*) FROM review_table WHERE pt_classes.CLASS_ID = review_table.CLASS_ID) cnt_review,
+				(SELECT SUM(USER_RATING) FROM review_table WHERE pt_classes.CLASS_ID = review_table.CLASS_ID) sum_review,
+				(SELECT USER_NAME FROM users WHERE users.USER_ID = (SELECT USER_ID FROM pt WHERE pt.PT_ID = pt_classes.PT_ID)) pt_name
+			FROM pt_classes
+			WHERE IFNULL(#class_word#,'') = '' 
+			OR pt_classes.CLASS_NAME LIKE CONCAT('%',#class_word#,'%') 
+			OR pt_classes.CLASS_INTRO LIKE CONCAT('%',#class_word#,'%')
+		]]>
+	</select>
+	
+	
+	
+	<select id="mainDAO.select_class_list_main" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				CLASS_ID			class_id,
+				PT_ID				pt_id,
+				CLASS_NAME			class_name,
+				FILE_NAME			file_name,
+				(SELECT COUNT(*) FROM review_table WHERE pt_classes.CLASS_ID = review_table.CLASS_ID) cnt_review,
+				(SELECT SUM(USER_RATING) FROM review_table WHERE pt_classes.CLASS_ID = review_table.CLASS_ID) sum_review,
+				(SELECT USER_NAME FROM users WHERE users.USER_ID = (SELECT USER_ID FROM pt WHERE pt.PT_ID = pt_classes.PT_ID)) pt_name
+			FROM pt_classes
+			ORDER BY CLASS_ID DESC LIMIT 6
+		]]>
+	</select>
+	
+	
+	<select id="mainDAO.select_class_info" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				CLASS_ID			class_id,
+				PT_ID				pt_id,
+				CLASS_NAME			class_name,
+				FILE_NAME			file_name,
+				VIDEO_LINK			video_link,
+				CLASS_INTRO			class_intro,
+				(SELECT PT_INTRO FROM pt WHERE pt_classes.PT_ID = pt.PT_ID) pt_intro,
+				(SELECT FILE_NAME FROM pt WHERE pt_classes.PT_ID = pt.PT_ID) pt_fileNm,
+				(SELECT COUNT(*) FROM review_table WHERE pt_classes.CLASS_ID = review_table.CLASS_ID) cnt_review,
+				(SELECT SUM(USER_RATING) FROM review_table WHERE pt_classes.CLASS_ID = review_table.CLASS_ID) sum_review,
+				(SELECT USER_ID FROM users WHERE users.USER_ID = (SELECT USER_ID FROM pt WHERE pt.PT_ID = pt_classes.PT_ID)) pt_user_id,
+				(SELECT USER_NAME FROM users WHERE users.USER_ID = (SELECT USER_ID FROM pt WHERE pt.PT_ID = pt_classes.PT_ID)) pt_name
+			FROM pt_classes
+			WHERE CLASS_ID = #class_id#
+		]]>
+	</select>
+	
+	
+	<select id="mainDAO.select_msg_cnt" resultClass="int">
+		<![CDATA[
+			SELECT
+				COUNT(*)		new_msg_cnt
+			FROM messages
+			WHERE INCOMING_USER_ID = #user_id# AND SEEN = 0 
+
+		]]>
+	</select>
+	
+	
+	<insert id="mainDAO.insert_newApplyClass_info">
+		<selectKey keyProperty="new_newApplyClass_id" resultClass="int">
+			SELECT IFNULL(MAX(NEW_APPLY_CLASS_ID),0)+1  FROM new_apply_class
+		</selectKey>
+		<![CDATA[
+			INSERT INTO new_apply_class (
+				NEW_APPLY_CLASS_ID, PT_ID, PU_ID, PU_MAIL, CLASS_ID, PU_NAME, CLASS_NAME
+			) VALUES (
+				#new_newApplyClass_id#,
+				#incoming_user_id#,
+				#outgoing_user_id#,
+				#pu_mail#,
+				#class_id#,
+				#pu_name#,
+				#class_name#
+			)
+		]]>
+	</insert>
+	
+	
+	
+</sqlMap>

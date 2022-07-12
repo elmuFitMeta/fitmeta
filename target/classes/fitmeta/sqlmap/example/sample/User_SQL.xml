@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="fitmeta_userDAO">
+
+	<insert id="fitmeta_userDAO.user_reg">
+	<selectKey keyProperty="new_user_id" resultClass="int">
+		SELECT IFNULL(MAX(USER_ID),0)+1  FROM users
+	</selectKey>
+	<![CDATA[
+		INSERT INTO users (
+			USER_ID, GUSER_ID, USER_TP, USER_NAME, USER_MAIL, USER_MOBILE
+		) VALUES (
+			#new_user_id#,
+			#gUser_id#,
+			#user_tp#,
+			#user_name#,
+			#user_mail#,
+			#user_mobile#
+		)
+	]]>
+	</insert>
+	
+	
+	<select id="fitmeta_userDAO.selectUser_by_g_user_id" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				USER_ID			user_id,
+				GUSER_ID		gUser_id,
+				USER_TP			user_tp,
+				USER_NAME 		user_name,
+				USER_MAIL		user_mail,
+				USER_MOBILE		user_mobile
+			FROM users
+			WHERE GUSER_ID = #gUser_id#
+		]]>	
+	</select>
+	
+	
+	<select id="fitmeta_userDAO.select_chat_user_list" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				USER_ID			user_id,
+				USER_TP			user_tp,
+				USER_NAME 		user_name,
+				(SELECT COUNT(*) FROM messages WHERE users.USER_ID = messages.OUTGOING_USER_ID AND #user_id# = messages.INCOMING_USER_ID AND messages.SEEN = 0) cnt_new_msg
+			FROM users
+			WHERE USER_ID != #user_id#
+			AND (USER_ID = (SELECT OUTGOING_USER_ID FROM messages WHERE users.USER_ID = messages.OUTGOING_USER_ID AND #user_id# = messages.INCOMING_USER_ID LIMIT 1)
+			OR USER_ID = (SELECT INCOMING_USER_ID FROM messages WHERE #user_id# = messages.OUTGOING_USER_ID AND users.USER_ID = messages.INCOMING_USER_ID LIMIT 1))
+		]]>	
+	</select>
+	
+	
+	<select id="fitmeta_userDAO.select_chat_user_info" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				USER_ID			user_id,
+				USER_TP			user_tp,
+				USER_NAME 		user_name				
+			FROM users
+			WHERE USER_ID = #user_id#
+		]]>	
+	</select>
+	
+	
+	<insert id="fitmeta_userDAO.insert_msg">
+	<selectKey keyProperty="new_msg_id" resultClass="int">
+		SELECT IFNULL(MAX(MSG_ID),0)+1  FROM messages
+	</selectKey>
+	<![CDATA[
+		INSERT INTO messages (
+			MSG_ID, INCOMING_USER_ID, OUTGOING_USER_ID, MSG
+		) VALUES (
+			#new_msg_id#,
+			#incoming_user_id#,
+			#outgoing_user_id#,
+			#msg#
+		)
+	]]>
+	</insert>
+	
+	
+	<select id="fitmeta_userDAO.select_msg_list" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				MSG_ID				msg_id,
+				INCOMING_USER_ID	incoming_user_id,
+				OUTGOING_USER_ID	outgoing_user_id,
+				MSG 				msg
+			FROM messages
+			WHERE (OUTGOING_USER_ID = #outgoing_user_id# AND INCOMING_USER_ID = #incoming_user_id#)
+			OR (OUTGOING_USER_ID = #incoming_user_id# AND INCOMING_USER_ID = #outgoing_user_id#)
+			ORDER BY MSG_ID
+		]]>	
+	</select>
+	
+	
+	<update id="fitmeta_userDAO.update_msg_seen">
+		UPDATE messages
+			<dynamic prepend="SET">
+				<isPropertyAvailable prepend="," property="seen"> SEEN = #seen# </isPropertyAvailable>
+			</dynamic>
+		WHERE INCOMING_USER_ID = #outgoing_user_id#
+		AND OUTGOING_USER_ID = #incoming_user_id#
+		AND SEEN = 0
+	</update>
+	
+	
+</sqlMap>

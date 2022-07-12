@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="trainerDAO">
+
+	<insert id="trainerDAO.insert_pt_info">
+	<selectKey keyProperty="new_pt_id" resultClass="int">
+		SELECT IFNULL(MAX(PT_ID),0)+1  FROM pt
+	</selectKey>
+	<![CDATA[
+		INSERT INTO pt (
+			PT_ID, YN, USER_ID, GUSER_ID, ADDRESS, PT_INTRO
+		) VALUES (
+			#new_pt_id#,
+			#yn#,
+			#user_id#,
+			#gUser_id#,
+			#address#,
+			#pt_intro#
+		)
+	]]>
+	</insert>
+	
+	<insert id="trainerDAO.insert_conts_info">
+	<selectKey keyProperty="new_conts_id" resultClass="int">
+		SELECT IFNULL(MAX(CONTS_ID),0)+1  FROM pt_contents
+	</selectKey>
+	<![CDATA[
+		INSERT INTO pt_contents (
+			CONTS_ID, PT_ID, CONTS_NAME, CONTS_LINK
+		) VALUES (
+			#new_conts_id#,
+			#pt_id#,
+			#conts_name#,
+			#conts_link#
+		)
+	]]>
+	</insert>
+	
+	
+	<select id="trainerDAO.select_pt_info" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT 
+				PT_ID			pt_id,
+				USER_ID			user_id,
+				GUSER_ID		guser_id,
+				ADDRESS			address,
+				PT_INTRO		pt_intro,
+				FILE_NAME		file_name
+			FROM pt
+			WHERE USER_ID = #user_id#
+		]]>
+	</select>
+	
+	
+	<select id="trainerDAO.select_content_list" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				CONTS_ID			conts_id,
+				PT_ID				pt_id,
+				CONTS_NAME			conts_name,
+				CONTS_LINK			conts_link
+			FROM pt_contents
+			WHERE PT_ID = #pt_id#
+		]]>
+	</select>
+	
+	
+	<delete id="trainerDAO.delete_conts_info">
+		<![CDATA[
+			DELETE FROM pt_contents 
+			WHERE	PT_ID = #pt_id#
+     		AND CONTS_ID = #conts_id#
+		]]>
+	</delete>
+	
+	
+	<insert id="trainerDAO.insert_plan_info">
+	<selectKey keyProperty="new_plan_id" resultClass="int">
+		SELECT IFNULL(MAX(PLAN_ID),0)+1  FROM pt_plans
+	</selectKey>
+	<![CDATA[
+		INSERT INTO pt_plans (
+			PLAN_ID, PT_ID, PLAN_TP, PLAN_PRICE, PLAN_SERVICE
+		) VALUES (
+			#new_plan_id#,
+			#pt_id#,
+			#plan_tp#,
+			#plan_price#,
+			#plan_service#
+		)
+	]]>
+	</insert>
+	
+	
+	
+	<select id="trainerDAO.select_plan_list" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				PLAN_ID				plan_id,
+				PT_ID				pt_id,
+				PLAN_TP				plan_tp,
+				PLAN_PRICE			plan_price,
+				PLAN_SERVICE		plan_service
+			FROM pt_plans
+			WHERE PT_ID = #pt_id#
+		]]>
+	</select>
+	
+	
+	<delete id="trainerDAO.delete_plan_info">
+		<![CDATA[
+			DELETE FROM pt_plans
+			WHERE PT_ID = #pt_id#
+     		AND PLAN_ID = #plan_id#
+		]]>
+	</delete>
+	
+	
+	<insert id="trainerDAO.insert_class_info">
+		<selectKey keyProperty="new_class_id" resultClass="int">
+			SELECT IFNULL(MAX(CLASS_ID),0)+1  FROM pt_classes
+		</selectKey>
+		<![CDATA[
+			INSERT INTO pt_classes (
+				CLASS_ID, PT_ID, CLASS_NAME, CLASS_TP, FILE_NAME, CLASS_INTRO
+			) VALUES (
+				#new_class_id#,
+				#pt_id#,
+				#class_name#,
+				#class_tp#,
+				#file_name#,
+				#class_intro#
+			)
+		]]>
+	</insert>
+	
+	
+	
+	<select id="trainerDAO.select_class_list" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				CLASS_ID			class_id,
+				PT_ID				pt_id,
+				CLASS_NAME			class_name,
+				CLASS_TP			class_tp,
+				FILE_NAME			file_name,
+				CLASS_INTRO			class_intro
+			FROM pt_classes
+			WHERE PT_ID = #pt_id#
+		]]>
+	</select>
+	
+	
+	<delete id="trainerDAO.delete_class_info">
+		<![CDATA[
+			DELETE FROM pt_classes
+			WHERE PT_ID = #pt_id#
+     		AND CLASS_ID = #class_id#
+		]]>
+	</delete>
+	
+	
+	
+	
+	<insert id="trainerDAO.insert_service_info">
+	<selectKey keyProperty="new_serv_id" resultClass="int">
+		SELECT IFNULL(MAX(SERV_ID),0)+1  FROM pt_services
+	</selectKey>
+	<![CDATA[
+		INSERT INTO pt_services (
+			SERV_ID, PT_ID, SERV_NAME, SERV_INTRO
+		) VALUES (
+			#new_serv_id#,
+			#pt_id#,
+			#serv_name#,
+			#serv_intro#
+		)
+	]]>
+	</insert>
+	
+	
+	
+	<select id="trainerDAO.select_service_list" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				SERV_ID				serv_id,
+				PT_ID				pt_id,
+				SERV_NAME			serv_name,
+				SERV_INTRO			serv_intro
+			FROM pt_services
+			WHERE PT_ID = #pt_id#
+		]]>
+	</select>
+	
+	
+	<delete id="trainerDAO.delete_service_info">
+		<![CDATA[
+			DELETE FROM pt_services
+			WHERE PT_ID = #pt_id#
+     		AND SERV_ID = #serv_id#
+		]]>
+	</delete>
+	
+	
+	
+	<insert id="trainerDAO.insert_news_info">
+		<selectKey keyProperty="new_news_id" resultClass="int">
+			SELECT IFNULL(MAX(NEWS_ID),0)+1  FROM pt_news
+		</selectKey>
+		<![CDATA[
+			INSERT INTO pt_news (
+				NEWS_ID, PT_ID, NEWS_TITLE, FILE_NAME, NEWS_INFO
+			) VALUES (
+				#new_news_id#,
+				#pt_id#,
+				#news_title#,
+				#file_name#,
+				#news_info#
+			)
+		]]>
+	</insert>
+	
+	
+	<select id="trainerDAO.select_news_list" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				NEWS_ID				news_id,
+				PT_ID				pt_id,
+				NEWS_TITLE			news_title,
+				FILE_NAME			file_name,
+				NEWS_INFO			news_info
+			FROM pt_news
+			WHERE PT_ID = #pt_id#
+		]]>
+	</select>
+	
+	
+	<delete id="trainerDAO.delete_news_info">
+		<![CDATA[
+			DELETE FROM pt_news
+			WHERE PT_ID = #pt_id#
+     		AND NEWS_ID = #news_id#
+		]]>
+	</delete>
+	
+	
+	
+	<select id="trainerDAO.select_news_single" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				NEWS_ID			news_id,
+				PT_ID			pt_id,
+				NEWS_TITLE		news_title,
+				FILE_NAME		file_name,
+				NEWS_INFO		news_info
+			FROM pt_news
+			WHERE PT_ID = #pt_id# AND NEWS_ID = #news_id# 
+		]]>
+	</select>
+	
+	
+	<select id="trainerDAO.select_news_list_by" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				NEWS_ID				news_id,
+				PT_ID				pt_id,
+				NEWS_TITLE			news_title,
+				FILE_NAME			file_name
+			FROM pt_news
+			WHERE PT_ID = #pt_id#
+			ORDER BY NEWS_ID DESC LIMIT 6
+		]]>
+	</select>
+	
+	
+	<select id="trainerDAO.select_trainer_list" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT 
+				PT_ID			pt_id,
+				USER_ID			user_id,
+				GUSER_ID		guser_id,
+				FILE_NAME		file_name,				
+				(SELECT USER_NAME FROM users WHERE pt.USER_ID = users.USER_ID) user_name
+			FROM pt
+		]]>
+	</select>
+	
+	
+	<select id="trainerDAO.select_ptAll_info" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT 
+				PT_ID			pt_id,
+				USER_ID			user_id,
+				GUSER_ID		guser_id,
+				ADDRESS			address,
+				PT_INTRO		pt_intro,
+				FILE_NAME		file_name,
+				(SELECT USER_TP FROM users WHERE pt.USER_ID = users.USER_ID) user_tp,
+				(SELECT USER_NAME FROM users WHERE pt.USER_ID = users.USER_ID) user_name,
+				(SELECT USER_MAIL FROM users WHERE pt.USER_ID = users.USER_ID) user_mail,
+				(SELECT USER_MOBILE FROM users WHERE pt.USER_ID = users.USER_ID) user_mobile
+			FROM pt
+			WHERE (IFNULL(#pt_id#,'') = '' AND USER_ID = #user_id#) OR
+					(IFNULL(#user_id#,'') = '' AND PT_ID = #pt_id#)
+		]]>
+	</select>
+	
+	
+	
+</sqlMap>

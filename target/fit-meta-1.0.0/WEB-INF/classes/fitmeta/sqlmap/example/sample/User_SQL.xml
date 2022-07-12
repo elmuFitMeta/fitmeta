@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="fitmeta_userDAO">
+
+	<insert id="fitmeta_userDAO.user_reg">
+	<selectKey keyProperty="new_user_id" resultClass="int">
+		SELECT IFNULL(MAX(USER_ID),0)+1  FROM users
+	</selectKey>
+	<![CDATA[
+		INSERT INTO users (
+			USER_ID, GUSER_ID, USER_TP, USER_NAME, USER_MAIL, USER_MOBILE
+		) VALUES (
+			#new_user_id#,
+			#gUser_id#,
+			#user_tp#,
+			#user_name#,
+			#user_mail#,
+			#user_mobile#
+		)
+	]]>
+	</insert>
+	
+	
+	<select id="fitmeta_userDAO.selectUser_by_g_user_id" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				USER_ID			user_id,
+				GUSER_ID		gUser_id,
+				USER_TP			user_tp,
+				USER_NAME 		user_name,
+				USER_MAIL		user_mail,
+				USER_MOBILE		user_mobile
+			FROM users
+			WHERE GUSER_ID = #gUser_id#
+		]]>	
+	</select>
+	
+	
+</sqlMap>

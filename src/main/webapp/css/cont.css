@@ -1,0 +1,91 @@
+@charset "utf-8";
+
+/* 환경 설정 */
+.set .wrap_set {margin-top:40px; overflow:hidden}
+.set .menu_set,
+.set .wrap_cont {background:#fafafa; border:1px solid #ebebeb;}
+.set .menu_set {float:left; width:270px; margin-right:30px; border-radius:0 5px 5px 0}
+.set .menu_set form {display:none;}
+.set .menu_set li + li {border-top:1px solid #ebebeb;}
+.set .menu_set a {display:block; line-height:20px; padding:18px 40px; font-size:14px; font-weight:bold;}
+.set .menu_set li.on a {border-left:10px solid #005e86; color:#005e86; padding-left:30px}
+.set .wrap_cont {overflow:hidden; padding:0 28px 50px; border-radius:5px;}
+.set .wrap_cont .hd {padding:16px 0 11px; border-bottom:1px solid #ebebeb; }
+.set .wrap_cont .hd strong {display:inline-block; font-size:14px; font-weight:bold; }
+.set .wrap_cont .inner {padding:16px 0 54px; border-bottom:1px solid #ebebeb;}
+.set .wrap_cont dl + dl {margin-top:24px;}
+.set .wrap_cont dt {font-weight:bold;}
+.set .wrap_cont dd {margin-top:10px;}
+.set .wrap_cont .inp {display:block; width:100%; height:40px; border:1px solid #ddd; border-radius:5px; padding:0 18px; box-sizing:border-box; font-size:12px; background:#fff; color:#999}
+.set .wrap_cont .inp:disabled,
+.set .wrap_cont .inp[disabled=disabled] {background:#eee; }
+.set .wrap_cont textarea.inp {height:160px;padding:5px 18px;}
+.set .wrap_cont .list_skill {border:1px solid #ddd; border-radius:5px; padding:12px; box-sizing:border-box; background:#fff; font-size:0;}
+.set .wrap_cont .list_skill li {display:inline-block; vertical-align: top; margin:6px;}
+.set .wrap_cont .list_skill input {display:none;}
+.set .wrap_cont .list_skill label {display:inline-block; vertical-align:top; padding:3px 8px 1px; border-radius:5px; font-size:12px; background:#eee; color:#999; cursor: pointer;}
+.set .wrap_cont .list_skill input:checked + label {background-color:#666; color:#fff;}
+.set .wrap_cont .btn_bold {margin-top:30px; width:20%; font-weight:bold; font-size:12px; height:40px; line-height:40px; box-sizing:border-box;}
+.set .set_sns .thumb {float:left; width:100px; height:100px; margin-right:40px; border-radius:5px;}
+.set .set_sns .thumb + .ovf {padding-top:40px; color:#999}
+.set .set_sns .thumb + .ovf .btn_bold {display:block; width:170px}
+.set .set_sns .wrap_url {border:1px solid #ddd; height:40px; box-sizing:border-box; border-radius:5px; background:#fff; padding:0px 18px;}
+.set .set_sns .wrap_url span {display:inline-block; line-height:38px; color:#999; letter-spacing:0; font-weight:bold}
+.set .set_sns .wrap_url input[type=text] {display:inline-block; height:38px; font-weight:bold;}
+.set .set_sns ::-webkit-input-placeholder,
+.set .set_sns :-moz-placeholder,
+.set .set_sns ::-moz-placeholder,
+.set .set_sns :-ms-input-placeholder,
+.set .set_sns ::-ms-input-placeholder,
+.set .set_sns ::placeholder {font-weight: normal;}
+.set .set_leave .wrap_cont .inner {padding:30px 0; color:#999}
+.set .set_leave .wrap_cont .inner dt {color:#666}
+.set .set_leave .wrap_agree {padding:36px 0 50px; font-weight:bold;}
+.set .set_leave .btn_emph {display:block; width:100%; box-sizing:border-box; height:40px; border-radius:5px; color:#fff; text-align:center; background:#005e86}
+.btn_bold {display:inline-block; border:2px solid #005e86; border-radius:4px; color:#005e86; text-align:center; font-size:14px;}
+
+@media (min-width:1200px){
+  .set .menu_set li a:hover {color:#005e86}
+
+}
+
+@media (min-width:1170px){
+  .btn:hover {background:#005e86; color:#fff;}
+  .btn_bold:hover {background-color:#005e86; color:#fff;}
+}
+
+@media (max-width:780px){
+  .set .wrap_set {margin-top:20px}
+  .set .menu_set {float:none; width:auto; margin:0; white-space:nowrap; overflow:auto; transition-property:-webkit-transform; -webkit-transform:translate3d(0,0,0); pointer-events:auto; -webkit-overflow-scrolling:touch; border:none; border-radius:0; background:none;}
+  .set .menu_set ul {display:none;}
+  .set .menu_set form {display:block; position:relative;}
+  .set .menu_set form::after {position:absolute; top:50%; right:18px; width:0; height:0; border-top:7px solid #ccc; border-left:7px solid transparent; border-right:7px solid transparent; content:''; margin-top:-3px;}
+  .set .menu_set form select {display:block; width:100%; height:42px; font-weight:bold; color:#005e86; font-size:14px; border-radius:4px; border:1px solid #ccc; background:#fff; -webkit-appearance:none; padding:0 18px;}
+  .set .wrap_cont {margin-top:20px; padding:0 14px 20px; }
+  .set .wrap_cont .hd {padding:10px 0 8px;}
+  .set .wrap_cont .inner {padding:20px 0 20px;}
+  .set .wrap_cont dl + dl {margin-top:20px;}
+  .set .wrap_cont dd {margin-top:5px;}
+  .set .set_sns .thumb {float:none; margin:0 auto;}
+  .set .set_sns .thumb + .ovf {padding-top:20px; text-align:center;}
+  .set .set_sns .thumb + .ovf .btn_bold {margin:20px auto 0; }
+  .set .set_sns .wrap_url {padding:0 12px}
+  .set .set_sns .wrap_url span {display:none;}
+  .set .set_leave .wrap_agree {padding:30px 0}
+  .set .set_leave .wrap_agree .chk {float:left;}
+  .set .set_leave .wrap_agree label {display:block; overflow:hidden;}
+}
+
+ul{list-style:none; padding:0;}
+
+.ovf input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+
