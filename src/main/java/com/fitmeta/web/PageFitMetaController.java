@@ -91,9 +91,9 @@ public class PageFitMetaController {
 	}
 	
 	
-	@RequestMapping(value = "/main/single.do")
+	@RequestMapping(value = "/main/pu-info.do")
 	public String mainSingle(ModelMap model) throws Exception {
-		return "main/single";
+		return "main/pu-info";
 	}
 	
 	

@@ -74,7 +74,7 @@
 		                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">マイページ</a>
 		                    <div class="dropdown-menu">
 		                        <a href="/fit-meta/main/user-chatting.do" class="dropdown-item">Chatting</a>
-		                        <a href="/fit-meta/main/single.do" class="dropdown-item">News Detail</a>
+		                        <a href="/fit-meta/main/pu-info.do" class="dropdown-item">My Info</a>
 		                    </div>
 		                </div>
             		<% } %>

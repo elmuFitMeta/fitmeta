@@ -23,7 +23,7 @@
                 <a href="/fit-meta/pt/class.do" id="_class" class="nav-item nav-link">クラス</a>
                 <a href="/fit-meta/pt/contents.do" id="_contents" class="nav-item nav-link">コンテンツ</a>
                 <a href="/fit-meta/pt/news.do" id="_news" class="nav-item nav-link">ニュース</a>
-                <a href="/fit-meta/pt/contact.do" id="_contact" class="nav-item nav-link">Contact</a>
+                <a href="/fit-meta/pt/register.do" id="_register" class="nav-item nav-link">Register</a>
             </div>
         </div>
     </div>

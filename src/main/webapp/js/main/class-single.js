@@ -1,4 +1,4 @@
-let user = window.SESSION_USER_INFO;
+let user = window.SESSION_USER_INFO, calendar;
 
 $(document).ready(function(){
     fStart();
@@ -11,6 +11,8 @@ function fStart() {
     mrgelo.core.ajaxSend('getClassInfo', {class_id: classId, service_tp: 'class_info'});
     if (mrgelo.data.retcode != "000") return;
     setClassInfo();
+    initCalendar();
+    addEvent();
 }
 
 
@@ -91,6 +93,46 @@ function applyForClass() {
 
     mrgelo.core.ajaxSend('insertMsgInfo', jsonParam);
 
+}
+
+function initCalendar() {
+    let calendarEl = $('#calendar')[0];
+
+    calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      initialDate: new Date(),
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      events: [],
+      eventBackgroundColor: '#a11e12',
+      eventBorderColor: '#ed6a5e',
+      eventTimeFormat: {
+        hour: 'numeric',
+        minute: '2-digit',
+        omitZeroMinute: true,
+        hour12: false
+      },
+      locale: 'ja',
+    });
+  
+    calendar.render();
+}
+
+function addEvent() {
+    if(mrgelo.data.classEvents == undefined) return;
+    let classEventsArr = mrgelo.data.classEvents;
+
+    classEventsArr.forEach(obj => {
+        calendar.addEvent({
+          id: obj.event_id,
+          title: obj.class_name,
+          start: obj.date+'T'+obj.start_time,
+          end: obj.date+'T'+obj.end_time
+        });
+    });
 }
 
 

@@ -5,7 +5,9 @@ classId,
 classSingleInfo,
 classEvents,
 showUnrepeatableBoxBtn,
+showRepeatableBoxBtn,
 closeUnrepeatableBoxBtn,
+closeRepeatableBoxBtn,
 closeEventViewBoxBtn,
 inputEventCnt,
 eventCnt,
@@ -13,7 +15,7 @@ registerFormFirst,
 selectElem,
 classTable,
 currentPage = 1,
-itemsPerPage = 5,
+itemsPerPage = 10,
 paginationCtnr,
 totalPage = 0;
 
@@ -32,11 +34,14 @@ function fStart() {
   load();
   renderRows(classEvents);
   updateSelectOption();
+  $(".timePicker").hunterTimePicker();
 }
 
 function getElements(){
   showUnrepeatableBoxBtn = $('#unrepeatable')[0];
+  showRepeatableBoxBtn = $('#repeatable')[0];
   closeUnrepeatableBoxBtn = $('#todo-modal-close-btn')[0];
+  closeRepeatableBoxBtn = $('#repeat-register-btn')[0];
   closeEventViewBoxBtn = $('#event-view-btn')[0];
   inputEventCnt = $('#evnt-cnt')[0];
   registerFormFirst = $('#register-form-1');
@@ -47,7 +52,9 @@ function getElements(){
 
 function addListeners(){
   showUnrepeatableBoxBtn.addEventListener("click", showUnrepeatableBox, false);
+  showRepeatableBoxBtn.addEventListener("click", showRepeatableBox, false);
   closeUnrepeatableBoxBtn.addEventListener("click", closeUnrepeatableBox, false);
+  closeRepeatableBoxBtn.addEventListener("click", closeRepeatableBox, false);
   closeEventViewBoxBtn.addEventListener("click", closeEventViewBox, false);
   inputEventCnt.addEventListener("change", setEventDates, false);
   selectElem.addEventListener('change', userNameFilter, false);
@@ -123,8 +130,16 @@ function showUnrepeatableBox() {
   document.getElementById('todo-overlay').classList.add('slidedIntoView');
 }
 
+function showRepeatableBox() {
+  document.getElementById('repeat-register').classList.add('slidedIntoView');
+}
+
 function closeUnrepeatableBox() {
   document.getElementById('todo-overlay').classList.remove('slidedIntoView');
+}
+
+function closeRepeatableBox() {
+  document.getElementById('repeat-register').classList.remove('slidedIntoView');
 }
 
 function setEventDates(e) {
@@ -133,7 +148,7 @@ function setEventDates(e) {
 
   for (let i = 0; i < eventCnt; i++) {
     textHtml += '<span>Date: </span>';
-    textHtml += '<input type="date" onkeydown="return false" id="dateInput'+i+'">';
+    textHtml += '<input type="date" onkeydown="return false;" id="dateInput'+i+'">';
     textHtml += '<span>Time start: </span>';
     textHtml += '<input type="text" class="time-picker" readonly id="startTime'+i+'">';
     textHtml += '<span>Time end: </span>';
@@ -150,6 +165,8 @@ function setEventDates(e) {
 
 function registerClassEvents() {
   let arrEvents = new Array();
+  let checkDate = new Date();
+  checkDate = new Date(checkDate.setMonth(checkDate.getMonth()+3));
   for (let i = 0; i < eventCnt; i++) {
     let objEvents = new Object();
     objEvents.date = $('#dateInput'+i+'').val();
@@ -157,6 +174,11 @@ function registerClassEvents() {
     objEvents.endTime = $('#endTime'+i+'').val();
     if (objEvents.date == '' || objEvents.startTime == '' || objEvents.endTime == '') {
       alert('Input the date or time!');
+      return;
+    }
+    let endDate = new Date(objEvents.date);
+    if (endDate > checkDate) {
+      alert('Please select date inside 3 months!');
       return;
     }
     arrEvents.push(objEvents);
@@ -175,11 +197,86 @@ function registerClassEvents() {
   closeUnrepeatableBox();
   mrgelo.core.ajaxSend('classEventReg', paramJson);
   clearTable();
+  currentPage = 1;
+  totalPage = 0;
   classEvents = mrgelo.data.updateEvents.classEvents;
   mrgelo.data.classEvents = classEvents;
   renderRows(classEvents);
   updateSelectOption();
+  registerFormFirst.empty();
+  $('#evnt-cnt').val($("#event-cnt option:first").val());
+}
 
+function registerRepeatClassEvents() {
+  let daysSelected = new Array();
+  let arrEvents = new Array();
+  $('input[name="_week-days"]:checked').each(function() {
+    daysSelected.push(parseInt(this.value));
+    $(this).prop('checked', false);
+  });
+
+  if(daysSelected.length == 0) {
+    alert('Please insert days of week!');
+    return;
+  }
+
+  const startDate = new Date($('#start-date').val());
+  const endDate = new Date($('#end-date').val());
+  if (isNaN(startDate) || isNaN(endDate)) {
+    alert('Please insert dates!');
+    return;
+  }
+
+  let checkDate = new Date();
+  checkDate = new Date(checkDate.setMonth(checkDate.getMonth()+3));
+  if (endDate > checkDate) {
+    alert('Please select date inside 3 months!');
+    return;
+  }
+
+  const startTime = $('#start-time').val();
+  const endTime = $('#end-time').val();
+  if (startTime == '' || endTime == '') {
+    alert('Please insert times!');
+    return;
+  }
+
+  while (startDate <= endDate) {
+
+    if (daysSelected.includes(startDate.getDay())) {
+      let objEvents = new Object();
+      objEvents.date = startDate.getFullYear() + "-" + ('0' + (startDate.getMonth() + 1)).slice(-2) + "-" + ('0' + startDate.getDate()).slice(-2);
+      objEvents.startTime = startTime;
+      objEvents.endTime = endTime;
+      arrEvents.push(objEvents);
+    }
+
+    startDate.setDate(startDate.getDate() + 1);
+  }
+
+  let paramJson = new Object();
+  paramJson.service_tp = "class_event_reg";
+  paramJson.crud_tp = "c";
+  paramJson.pt_id = userId;
+  paramJson.user_id = classSingleInfo.pu_id;
+  paramJson.user_name = classSingleInfo.pu_name;
+  paramJson.class_id = classSingleInfo.class_id;
+  paramJson.class_name = classSingleInfo.class_name;
+  paramJson.arrEvents = arrEvents;
+
+  closeRepeatableBox();
+  mrgelo.core.ajaxSend('classEventReg', paramJson);
+  clearTable();
+  currentPage = 1;
+  totalPage = 0;
+  classEvents = mrgelo.data.updateEvents.classEvents;
+  mrgelo.data.classEvents = classEvents;
+  renderRows(classEvents);
+  updateSelectOption();
+  $('#start-date').val('');
+  $('#end-date').val('');
+  $('#start-time').val('');
+  $('#end-time').val('');
 }
 
 function renderRows(classEventsArr) {
@@ -192,11 +289,11 @@ function renderRows(classEventsArr) {
     });
   });
 
-  
   renderPageNumbers(classEventsArr);
   currentPage = currentPage > totalPage ? totalPage : currentPage;
   
   let slicedArr = classEventsArr.slice(itemsPerPage * (currentPage - 1), itemsPerPage * currentPage);
+
   slicedArr.forEach(eventObj => {
     renderRow(eventObj);
   });
@@ -250,10 +347,6 @@ function renderRow(obj) {
   trElem.appendChild(tdElem4);
 
   function deleteEvent() {
-    trElem.remove();
-
-    // remove from calendar
-    calendar.getEventById(this.dataset.id).remove();
 
     let paramJson = new Object();
     paramJson.service_tp = "class_event_reg";
@@ -262,8 +355,12 @@ function renderRow(obj) {
     paramJson.event_id = this.dataset.id;
 
     mrgelo.core.ajaxSend('classEventReg', paramJson);
+    clearTable();
+    currentPage = 1;
+    totalPage = 0;
     classEvents = mrgelo.data.updateEvents.classEvents;
     mrgelo.data.classEvents = classEvents;
+    renderRows(classEvents);
     updateSelectOption();
   }
 }
@@ -348,8 +445,6 @@ function renderPageNumbers(arr) {
     pageNumberDiv.innerHTML += '<span class="material-icons chevron" data-pagination="lastPage">last_page</span>';
 }
 
-
-
 function onPaginationBtnClick(event) {
   switch (event.target.dataset.pagination) {
     case 'pageNum':
@@ -370,3 +465,4 @@ function onPaginationBtnClick(event) {
   }
   userNameFilter();
 }
+

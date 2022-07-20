@@ -4,6 +4,9 @@
 
 <%@ include file="../common/head.jsp" %>
 
+<link href="${projectPath}/css/fullcalendar/main.min.css" rel="stylesheet">
+<script src="${projectPath}/js/fullcalendar/main.min.js" defer></script>
+
     <body>
         <!-- Bar Start -->
 		<jsp:include page="../common/menu.jsp" />
@@ -48,6 +51,9 @@
                                 <p id="pt-intro"></p>
                             </div>
                         </div>
+                        <br>
+                        <div id="calendar" class="wow fadeInUp"></div>
+                        <br> <br>
                         <div class="comment-form wow fadeInUp">
                             <h2>Question Box</h2>
                             <div class="form-group">

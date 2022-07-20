@@ -83,6 +83,12 @@ public class FitMetaMainServiceImpl implements FitMetaMainService {
 		}
 		
 		retMap.put("classInfo", classInfo);
+		
+		jsonMap.put("pt_id", classInfo.get("pt_id"));
+		
+		// Select Class Events List
+		List<?> classEvents = ajaxTrainerDAO.selectClassEventsList(jsonMap);
+		retMap.put("classEvents", classEvents);
 
 		retMap.put("retcode", "000");
 		retMap.put("retmsg", "정상적으로 조회되었습니다.");

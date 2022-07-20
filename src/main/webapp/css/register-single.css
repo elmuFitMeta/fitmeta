@@ -59,12 +59,13 @@
 
 
   body{
-
+    margin: 0;
     font-family: 'Titillium Web', sans-serif;
   }
 
   .todo-block{
     padding: 1rem;
+    margin: 1rem;
     color: #a11e12;
   }
 
@@ -106,6 +107,22 @@
   }
 
   .class-event-view{
+    width: 100vw;
+    height: 100vh;
+    background-color: #ddd;
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0.9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(-100vw);
+    transition: transform 250ms;
+    z-index: 2;
+  }
+
+  .repeat-register{
     width: 100vw;
     height: 100vh;
     background-color: #ddd;
@@ -186,3 +203,29 @@
     text-align: right;
     margin-bottom: 0.5rem;
   }
+
+
+  .topnav {
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  .topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  .tt_custom_sm{
+    overflow-y: scroll !important;
+    max-height: 128%;
+   } 
