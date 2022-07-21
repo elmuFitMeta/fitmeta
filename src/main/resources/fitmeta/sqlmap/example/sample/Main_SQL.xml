@@ -93,5 +93,19 @@
 	</insert>
 	
 	
+	<select id="mainDAO.select_pu_info" resultClass="java.util.HashMap">
+		<![CDATA[
+			SELECT
+				USER_ID			user_id,
+				USER_TP			user_tp,
+				USER_NAME		user_name,
+				USER_MAIL		user_mail,
+				USER_MOBILE		user_mobile
+			FROM users
+			WHERE USER_ID = #user_id#
+		]]>
+	</select>
+	
+	
 	
 </sqlMap>

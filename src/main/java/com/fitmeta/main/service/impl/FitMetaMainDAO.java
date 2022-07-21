@@ -43,5 +43,15 @@ public class FitMetaMainDAO extends EgovAbstractDAO {
 		// TODO Auto-generated method stub
 		return (HashMap<String, Object>) select("mainDAO.select_class_info", jsonMap);
 	}
+	
+	
+	/**
+	 *  getting pu info
+	 */
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> selectPuInfo(HashMap<String, Object> jsonMap) {
+		// TODO Auto-generated method stub
+		return (HashMap<String, Object>) select("mainDAO.select_pu_info", jsonMap);
+	}
 
 }

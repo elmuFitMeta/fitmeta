@@ -38,7 +38,8 @@ public class DefineService {
 		new_apply_class_info,
 		delete_new_apply_class_info,
 		new_apply_class_single_info,
-		class_event_reg
+		class_event_reg,
+		pu_info_reg
 	}
 	 
 	// 한 페이지 당 출력될 개수

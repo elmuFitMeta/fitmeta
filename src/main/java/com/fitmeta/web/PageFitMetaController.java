@@ -92,8 +92,44 @@ public class PageFitMetaController {
 	
 	
 	@RequestMapping(value = "/main/pu-info.do")
-	public String mainSingle(ModelMap model) throws Exception {
-		return "main/pu-info";
+	public String puInfo(ModelMap model, HttpSession session) throws Exception {
+		String page = null;
+		if (session != null && session.getAttribute("user_id") != null && "3".equals(session.getAttribute("user_tp")))
+			page = "main/pu-info";
+		else
+			page = "redirect:/index.do";
+		
+		return page;
+	}
+	
+	
+	@RequestMapping(value = "/main/pu-event.do")
+	public String puEvent(ModelMap model) throws Exception {
+		return "main/pu-event";
+	}
+	
+	
+	@RequestMapping(value = "/main/pu-trainer.do")
+	public String puTrainer(ModelMap model) throws Exception {
+		return "main/pu-trainer";
+	}
+	
+	
+	@RequestMapping(value = "/main/pu-class.do")
+	public String puClass(ModelMap model) throws Exception {
+		return "main/pu-class";
+	}
+	
+	
+	@RequestMapping(value = "/main/pu-chatting-list.do")
+	public String puChattingList(ModelMap model) throws Exception {
+		return "main/pu-chatting-list";
+	}
+	
+	
+	@RequestMapping(value = "/main/pu-chatting.do")
+	public String puChatting(ModelMap model) throws Exception {
+		return "main/pu-chatting";
 	}
 	
 	

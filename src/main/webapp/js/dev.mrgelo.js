@@ -439,6 +439,24 @@ mrgelo.core.ajaxSend = function(type, params, isSync, callback){
                 }
             });
             break;
+
+        case "puInfoReg" :
+            req =  params;
+            $.ajax({
+                async : false,
+                data : { jsondata : JSON.stringify(req) },
+                xhrFields: {
+                    withCredentials: true
+                },
+                success : function( res ){
+                    if (res.retcode == "000") {
+                        mrgelo.data = res;
+                    } else {
+                        alert(res.retmsg);
+                    }
+                }
+            });
+            break;
     }
 }
 

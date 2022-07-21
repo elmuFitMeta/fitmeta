@@ -274,6 +274,12 @@ public class AjaxFitMetaController {
 	 			case review_info :
 		 			resMap = ajaxTrainerService.reviewInfo(jsonMap);
 		 			break;
+		 			
+				// [pu info]
+				case pu_info_reg:
+					if((inputcheckret = check_intpufield(jsonMap,(new String[] {"user_id", "crud_tp"}))) != null) break;
+					resMap = fitMetaMainService.puInfoReg(jsonMap);
+					break;
 													
 			}
 			

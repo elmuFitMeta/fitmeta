@@ -113,6 +113,41 @@ public class FitMetaMainServiceImpl implements FitMetaMainService {
 		return retMap;
 	}
 
+
+	@Override
+	public Map<String, Object> puInfoReg(HashMap<String, Object> jsonMap) throws Exception {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> jsonRetMap = new HashMap<String, Object>();
+		
+		if("r".equals(jsonMap.get("crud_tp"))) {
+			jsonRetMap = puInfoReg_r(jsonMap);
+		}
+		
+		return jsonRetMap;
+	}
+
+
+	private HashMap<String, Object> puInfoReg_r(HashMap<String, Object> jsonMap) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> retMap = new HashMap<String, Object>();
+		
+		// Select PU Info
+		HashMap<String, Object> puInfo = fitMetaMainDAO.selectPuInfo(jsonMap);
+		
+		if (puInfo == null) {
+			retMap.put("retcode", "999");
+			retMap.put("retmsg", "조건에 맞는 데이타가 없습니다.");
+			return retMap;
+		}
+		
+		retMap.put("puInfo", puInfo);
+
+		retMap.put("retcode", "000");
+		retMap.put("retmsg", "정상적으로 조회되었습니다.");
+		
+		return retMap;
+	}
+
 }
 
 
